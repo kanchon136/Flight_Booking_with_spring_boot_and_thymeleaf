@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master-page}">
+<head>
+
+<script th:src="@{/kanchonAllJs/customAllJs.js}"></script>
+<meta charset="UTF-8">
+<title>File Upload</title>
+</head>
+<body>
+
+	<th:block layout:fragment="content">
+
+		<form id="uploadForm" method="post" th:action="@{/upload}"
+			enctype="multipart/form-data">
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">ID</th>
+						<th scope="col">Airport Code</th>
+						<th scope="col">Airport Name</th>
+						<th scope="col">City</th>
+						<th scope="col">State</th>
+						<th scope="col">Country</th>
+						<th scope="col">File one/Multiple</th>
+					</tr>
+				</thead>
+				<tbody>
+					<div th:each="airport, iterStat:${airports}">
+						<tr style="background-color: #fdfdfd">
+							<th scope="row" th:text="${airport.airportId}">Dark</th>
+							<td th:text="${airport.airportCode}">
+							
+							</td>
+							<td th:text="${airport.airportName}"></td>
+							<td th:text="${airport.city}"></td>
+							<td th:text="${airport.state}"></td>
+							<td th:text="${airport.country}"></td>
+
+							<td class="align-center">
+								<div class="form-group">
+									<span class="btn btn-xs btn-file bg-blue-grey waves-effect">
+									  <input type="file" accept="*" name="files_${airport.airportId}" multiple>
+									</span> 
+									<!-- <input type="text" id="image_name" name="imageNameA[]" class="form-control hidden" readonly> --> 
+								   <input type="hidden" id="distId" name="distId[]" th:value="${airport.airportId}">
+                                  <!-- Debugging output to verify the value -->
+                                   <div th:text="${airport.airportId}"></div>
+								</div>
+							</td>
+
+						</tr>
+					</div>
+				</tbody>
+
+			</table>
+
+			<div class="form-group col-12">
+				<button type="submit" class="btn btn-success" style="float: right">
+					All Save</button>
+			</div>
+		</form>
+
+
+        <div>
+        
+        <input type="button" value="test" onclick="showLivePage()"/>
+        
+        </div>
+          
+          
+          
+          
+		<!-- <h1>File Upload</h1>
+		 <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="files" accept=".pdf,.jpg,.jpeg,.png,.txt,.csv,.doc,.docx,.xml" multiple="multiple">
+        <input type="submit" value="Upload File">
+    </form>
+
+		<form id="uploadForm" method="post" th:action="@{/upload}"
+			enctype="multipart/form-data">
+
+			<input type="file" multiple="multiple" name="files"
+				accept=".pdf,.jpg,.jpeg,.png,.txt,.csv,.doc,.docx,.xml" />
+			<button class="btn btn-sm btn-outline-success float-right"
+				type="submit">Upload</button>
+
+		</form> -->
+
+		<script>
+			const message = 'Hello, ES6!';
+			console.log(message);
+		</script>
+
+
+	</th:block>
+
+</body>
+</html>
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+<body>
+    <h1>File Upload</h1>
+    <form id="fileUploadForm" enctype="multipart/form-data">
+        <input type="text" name="distId" value="1">
+        <input type="text" name="unitIdA" value="2">
+        <input type="text" name="testResultA" value="Pass">
+        <input type="text" name="i_nameA" value="ImageName">
+        <input type="text" name="remarks" value="Remarks">
+        <input type="file" name="files" multiple> list of file jodi thake name id onujayi value pass korte hobe(if the generate input file field according to the loop)
+        <button type="button" onclick="uploadFiles()">Upload Files</button>
+    </form>
+
+    <script>
+        function uploadFiles() {
+            var form = document.getElementById('fileUploadForm');
+            var formData = new FormData(form);
+
+            fetch('/api/saveResultInfo', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('File upload failed');
+                }
+            })
+            .then(data => {
+                alert('Files uploaded successfully');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('File upload failed');
+            });
+        }
+    </script>
+</body>
+</html>
+ -->
+
+
+
+
+
+
+
