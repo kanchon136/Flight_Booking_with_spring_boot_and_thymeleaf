@@ -1,15 +1,11 @@
 package springbootandthymeleaf.com;
-
  
- 
- 
- 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,7 +39,12 @@ public class SpringBootWithThymeleafApplication implements CommandLineRunner{
 	private PasswordEncoder passwordencoder;
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootWithThymeleafApplication.class, args);
+		
+		 SpringApplication springApplication = new SpringApplication(SpringBootWithThymeleafApplication.class);
+		 springApplication.setBannerMode(Banner.Mode.OFF);
+		 springApplication.run(args);
+	 
+	//	SpringApplication.run(SpringBootWithThymeleafApplication.class, args);  // previous have just one line
 	}
 
  

@@ -18,14 +18,17 @@
 			</div>
 		</div>
 
-		<form action="/flight/new" method="POST" th:object="${flight}">
+		<form action="/flight/newway" method="POST" th:object="${flight}">
 			<div class="row">
 
 
 				<div class="from-group col-md-4">
-					<label class="col-form-label" for="aircraft">Aircraft</label> <span
-						th:if="${#fields.hasErrors('aircraft')}" th:errors="*{aircraft}"
-						class="badge badge-danger"></span> <select class="form-control"
+					<label class="col-form-label" for="aircraft">Aircraft</label> 
+					    <span
+						 th:if="${#fields.hasErrors('aircraft')}" th:errors="*{aircraft}"
+						class="badge badge-danger">
+						</span>
+						 <select class="form-control"
 						id="aircraft" name="aircraft">
 						<option th:each="a, i:${aircrafts}" th:text="${a.model}"
 							th:value="${a.aircraftId}"></option>
@@ -82,11 +85,10 @@
 						th:value="${flight.arivalDate}" required>
 				</div>
 				<div class="form-group col-md-6">
-					<label class="col-form-label" for="arrivalTime">Arrival
-						Time</label> <span th:if="${#fields.hasErrors('arivalTime')}"
-						th:errors="*{arivalTime}" class="badge badge-danger"></span> <input
-						type="time" class="form-control" id="arrivalTime"
-						name="arivalTime">
+					<label class="col-form-label" for="arrivalTime">Arrival Time</label> 
+						<span th:if="${#fields.hasErrors('arivalTime')}"
+						th:errors="*{arivalTime}" class="badge badge-danger"></span> 
+						<input type="time" class="form-control" id="arrivalTime" name="arivalTime">
 				</div>
 
 				<div class="form-group col-md-6">

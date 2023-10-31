@@ -1,9 +1,14 @@
 package springbootandthymeleaf.com.controller;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -15,17 +20,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import springbootandthymeleaf.com.ApiModel.ApiResponse;
 import springbootandthymeleaf.com.ApiModel.Department;
 import springbootandthymeleaf.com.apiService.DepartmentApiService;
+
 @Controller
 public class DepartmentApiController {
 	
@@ -33,6 +40,9 @@ public class DepartmentApiController {
 	
 	@Autowired
 	private DepartmentApiService departmentApiService;
+	
+	@Autowired
+	private TemplateEngine thymeleafTemplateEngine;
 	
 	 
 	
@@ -57,6 +67,72 @@ public class DepartmentApiController {
 		return "product/departments";
 	 
 	}
+	
+	@GetMapping("/generatePdf")
+	public void generateDepartmentPdf(HttpServletResponse response, Model model, HttpServletRequest request) throws IOException {
+	    Flux<Department> fluxDepartments = departmentApiService.getAllDepartments();
+	    List<Department> departments = fluxDepartments.collectList().block()
+	            .stream()
+	            .filter(d -> d.getDepartmentName() != null && !d.getDepartmentName().isEmpty())
+	            .sorted(Comparator.comparing(Department::getDepartmentId, Comparator.nullsLast(Long::compareTo)))
+	            .collect(Collectors.toList());
+
+	    model.addAttribute("departments", departments);
+
+	    // Use WebContext to ensure context is compatible with context-relative links
+	    WebContext context = new WebContext(request, response, request.getServletContext(), request.getLocale());
+	    log.info("=========request.getLocale=========:"+request.getLocale());
+	    context.setVariables(model.asMap());
+
+	    String htmlContent = thymeleafTemplateEngine.process("product/departments", context);
+         LocalDate date = LocalDate.now();
+	    response.setContentType("application/pdf");
+	    response.setHeader("Content-Disposition", "attachment; filename=departments.pdf");
+
+	    try {
+	        ITextRenderer renderer = new ITextRenderer();
+	        renderer.setDocumentFromString(htmlContent);
+	        renderer.layout();
+	        renderer.createPDF(response.getOutputStream());
+	    } catch (Exception e) {
+	        log.info(e.getMessage());
+	    }
+
+	    response.sendRedirect("/departments");
+	}
+	
+//	@GetMapping("/generatePdf")
+//    public void generateDepartmentPdf(HttpServletResponse response) {
+//        try {
+//            List<Department> departments = departmentApiService.getAllDepartments().collectList().block();
+//
+//            // Create a Thymeleaf context and add departments as a variable
+//            Context context = new Context();
+//            context.setVariable("departments", departments);
+//
+//            // Render the HTML using Thymeleaf
+//            String htmlContent = thymeleafTemplateEngine.process("departments", context);
+//
+//            // Set response headers for PDF download
+//            response.setContentType("application/pdf");
+//            response.setHeader("Content-Disposition", "attachment; filename=departments.pdf");
+//
+//            // Convert HTML to PDF using iText 7 HTMLConverter
+//            ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
+//            ConverterProperties converterProperties = new ConverterProperties();
+//            HtmlConverter.convertToPdf(htmlContent, pdfOutputStream, converterProperties);
+//
+//            // Write the PDF to the response output stream
+//            response.getOutputStream().write(pdfOutputStream.toByteArray());
+//            response.getOutputStream().flush();
+//
+//        } catch (Exception e) {
+//            log.error("Error generating PDF: " + e.getMessage());
+//        }
+//    }
+//	
+	
+	
 	
 	@GetMapping("/departmentsTryPagingation")
 	public String getAllDepartmentsForPagination(Model model, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "10") int size) {
