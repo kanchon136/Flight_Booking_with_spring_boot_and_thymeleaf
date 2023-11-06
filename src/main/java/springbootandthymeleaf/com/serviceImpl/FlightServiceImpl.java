@@ -104,15 +104,6 @@ public class FlightServiceImpl implements FlightService{
 	public List<Flight> findFlightsByDepartureAirportAndDestinationAirportAndDepartureDate(Airport deparAirport,
 			Airport destiAirport, LocalDate departureDate) {
 		
-		List<Flight> flights = flightRepo.findAll().parallelStream()
-				.filter(f-> f.getDepartureAirport().getAirportId()== deparAirport.getAirportId()
-				   && f.getDestinationAirport().getAirportId()==destiAirport.getAirportId()
-				   && f.getDepartureDate().equals(departureDate))
-				
-				.sorted(Comparator.comparing(Flight::getFlightNumber)
-						.thenComparing(Flight::getFlightId))
-				.collect(Collectors.toList());
-		 
 		return flightRepo.findAll().parallelStream()
 			.filter(f-> f.getDepartureAirport().getAirportId()==deparAirport.getAirportId()
 			         && f.getDestinationAirport().getAirportId()==destiAirport.getAirportId()
@@ -120,6 +111,8 @@ public class FlightServiceImpl implements FlightService{
 			  .sorted(Comparator.comparing(Flight::getFlightNumber, Comparator.reverseOrder())
 					.thenComparing(Flight::getDepartureDate, Comparator.reverseOrder()))
 			.collect(Collectors.toList());
+		
+		
 	}
 	
 	

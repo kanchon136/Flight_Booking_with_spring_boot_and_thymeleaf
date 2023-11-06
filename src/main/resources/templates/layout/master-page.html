@@ -53,15 +53,16 @@
                 </div>
     </nav>
 
-    <div class="row">
-        <div class="col-md-3">
-        <div class="list-group">
+  <div class="row">
+    <div class="col-md-3">
+       <div class="list-group">
          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+         
          
   <a href="/airports" class="list-group-item list-group-item-action">Aiport Operation Menu</a>
   <a href="/aircrafts" class="list-group-item list-group-item-action list-group-item-primary">Aircraft operation menu</a>
   <a href="/flights" class="list-group-item list-group-item-action list-group-item-secondary">Flight Operation Menu</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-success">Flight Booking Operation</a>
+  <a href="/flight/book" class="list-group-item list-group-item-action list-group-item-success">Flight Booking Operation</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Flight Search Operation</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-warning">Flight Veryfing Operation</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-info">This is the exra menu1</a>
@@ -71,19 +72,20 @@
   <a href="/departments"   class="list-group-item list-group-item-action list-group-item-dark">Department Webflux</a>
   <a href="/fileUpload" class="list-group-item list-group-item-action list-group-item-dark">File Uploads</a>
   
-   </th:block>
-</div>
-       </div>
+     </th:block>
+    </div>
+    
+ </div>
 
-        <div class="col-md-9">
-            <div class="container">
-                <div layout:fragment="content">
+  <div class="col-md-9">
+        <div class="container">
+            <div layout:fragment="content">
                     
                      
                 </div>
             </div>
         </div>
-    </div>
+  </div>
 
    
 </body>

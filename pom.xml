@@ -123,6 +123,21 @@
 			<version>7.0.4</version>
 			<type>pom</type>
 		</dependency>
+     <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>6.12.2</version>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-fonts</artifactId>
+        <version>6.12.2</version>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports-functions</artifactId>
+        <version>6.12.2</version>
+    </dependency>
 
 	</dependencies>
 

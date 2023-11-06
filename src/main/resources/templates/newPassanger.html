@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master-page}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <p>New Passenger page</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom: 10px">
+                <h1 style="color: darkblue">Passenger Information</h1>
+            </div>
+        </div>
+    </div>
+
+    <form action="/flight/book/new" method="post" th:object="${passanger}">
+        <div class="container">
+            <input type="hidden" th:value="${flightId}" name="flightId">
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                      <label class="form-label fw-bold" for="firstName">First Name</label>
+                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="badge bg-danger"></span>
+                        <input type="text" class="form-control" placeholder="" id="firstName" name="firstName" th:value="${passanger.firstName}" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold" for="lastName">Last Name</label>
+                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="badge bg-danger"></span>
+                        <input type="text" class="form-control" placeholder="" id="lastName" name="lastName" th:value="${passanger.lastName}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                       <label class="form-label fw-bold" for="phoneNumber">Phone Number</label>
+                       <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="badge bg-danger"></span>
+                       <input type="text" class="form-control" placeholder="" id="phoneNumber" name="phoneNumber" th:value="${passanger.phoneNumber}" required="required">
+                    </div>
+                    
+                    <div class="col-md-6">
+                    <label class="form-label fw-bold" for="passportNumber">Passport Number</label>
+                    <span th:if="${#fields.hasErrors('passportNumber')}" th:errors="*{passportNumber}" class="badge bg-danger"></span>
+                    <input type="text" class="form-control" placeholder="" id="passportNumber" name="passportNumber" th:value="${passanger.passportNumber}" required="required">
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                       <label class="form-label fw-bold" for="email"> Email</label>
+                       <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="badge bg-danger"></span>
+                       <input type="text" class="form-control" placeholder="" id="email" name="email" th:value="${passanger.email}" required="required">
+                    
+                    </div>
+                    <div class="col-md-6">
+                    <label class="form-label fw-bold" for="address">Address</label>
+                    <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="badge bg-danger"></span>
+                    <input type="text" class="form-control" placeholder="" id="address" name="address" th:value="${passanger.address}" required="required">
+                    </div>
+                </div> 
+                
+            </div>
+
+            <div class="form-group col-12 mt-3 d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Confirm booking</button>
+            </div>
+        </div>
+    </form>
+</th:block>
+</body>
+</html>

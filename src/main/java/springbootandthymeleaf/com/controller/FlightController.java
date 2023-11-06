@@ -1,5 +1,7 @@
 package springbootandthymeleaf.com.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import reactor.netty.http.server.HttpServerRequest;
+import springbootandthymeleaf.com.entity.Airport;
 import springbootandthymeleaf.com.entity.Flight;
+import springbootandthymeleaf.com.entity.Passanger;
 import springbootandthymeleaf.com.service.AircraftService;
 import springbootandthymeleaf.com.service.AirportService;
 import springbootandthymeleaf.com.service.FlightService;
@@ -174,12 +178,82 @@ public class FlightController {
 	
 	@GetMapping("/flight/book")
 	public String showBookFlightPage(Model model) {
-		model.addAttribute("airposrts", airportService.getAllAirports());
+		model.addAttribute("airports", airportService.getAllAirports());
 		
 		return "bookFlight";
 	}
+
+@PostMapping("flight/book")	
+public String showPageForSearchFlight(HttpServletRequest request, Model model) {
+	
+	Map<String, String[]> requestParam = request.getParameterMap();
+	
+	String  departureAirportId = requestParam.get("departureAirportId")[0];
+	String destinationAirportId = requestParam.get("destinationAirportId")[0];
+	String departureTime = requestParam.get("departuredateTime")[0];
+	
+	if(departureAirportId.equals(destinationAirportId)) {
+		model.addAttribute("sameAiportError", "DepartmentAiprtId and DestinationAirportId can't be same");
+		model.addAttribute("airports", airportService.getAllAirports());
+		
+		return "bookFlight";
+	}
+	Airport departureAirport = airportService.findById(Integer.valueOf(departureAirportId));
+	Airport destinationAiport = airportService.findById(Integer.valueOf(destinationAirportId));
+	DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	
+	LocalDate date = LocalDate.parse(departureTime,formater);
 	
 	
+	List<Flight> flights = flightService.findFlightsByDepartureAirportAndDestinationAirportAndDepartureDate(departureAirport, destinationAiport, date);
 	
+	if(flights.isEmpty()) {
+		model.addAttribute("flightListEmpty","Result not found ...........!" );
+		model.addAttribute("airports",airportService.getAllAirports() );
+		return "bookFlight";
+	}
+	model.addAttribute("flights", flights);
+	log.info("Flights size==================:"+flights.size());
+	
+	LocalDate d = flights.stream()
+			.map(p-> p.getArivalDate()).findFirst().get();
+	
+	log.info( "==============ArivalDate vlue ======================="+d);
+	
+	return "bookFlight";
+}
+
+
+@GetMapping("/flight/book/new")
+public String showCutomerInfoPage(@RequestParam("flightId") Long flightId, Model model) {
+	model.addAttribute("flightId", flightId);
+	model.addAttribute("passanger", new Passanger());
+	
+	return "newPassanger";
+}
+	
+@PostMapping("/flight/book/new")
+public String bookFlight(@Valid @RequestParam("passanger") Passanger passanger,
+		                                    @RequestParam("flightId") Long flightId,
+		                                    BindingResult bindingResult, Model model) {
+	
+	if(bindingResult.hasErrors()) {
+		model.addAttribute("errorFields", bindingResult.getAllErrors());
+		model.addAttribute("passanger", new Passanger());
+		return "redirect:/flight/book/new";
+	}
+	
+	Flight flight = flightService.findByflightId(flightId);
+	
+	Passanger passanger2 =  passanger;
+	passanger2.setFlight(flight);
+	
+	passangerService.saveOrUpdatePassanger(null, passanger2);
+	model.addAttribute("passanger", passanger2);
+	
+	
+	return "conFirmPage";
+	
+}
 
 }
