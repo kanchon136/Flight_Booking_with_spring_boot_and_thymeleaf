@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -207,6 +208,19 @@ public String showPageForSearchFlight(HttpServletRequest request, Model model) {
 	
 	List<Flight> flights = flightService.findFlightsByDepartureAirportAndDestinationAirportAndDepartureDate(departureAirport, destinationAiport, date);
 	
+//	List<Flight> checkListWithoutPassangerFlightId= flights.stream()
+//			.filter(flight-> flight.getPassangers().stream()
+//					.noneMatch(passanger-> passanger.getFlight().getFlightId() != null && 
+//					          passanger.getFlight().getFlightId()==flight.getFlightId())).collect(Collectors.toList());
+//	
+//	List<Flight> checkAllMatch= flights.parallelStream()
+//			.filter(f-> f.getPassangers().stream()
+//					.allMatch(p-> p.getFlight().getFlightId()==null && p.getFlight().getFlightId() != f.getFlightId()))
+//			.collect(Collectors.toList());
+//	log.info("checkAllMatch size==================:"+checkAllMatch.size());
+//	
+//	
+//	log.info("checkListWithoutPassangerFlightId size==================:"+checkListWithoutPassangerFlightId.size());
 	if(flights.isEmpty()) {
 		model.addAttribute("flightListEmpty","Result not found ...........!" );
 		model.addAttribute("airports",airportService.getAllAirports() );
@@ -233,9 +247,11 @@ public String showCutomerInfoPage(@RequestParam("flightId") Long flightId, Model
 }
 	
 @PostMapping("/flight/book/new")
-public String bookFlight(@Valid @RequestParam("passanger") Passanger passanger,
+public String bookFlight(@Valid @ModelAttribute("passanger") Passanger passanger,
 		                                    @RequestParam("flightId") Long flightId,
-		                                    BindingResult bindingResult, Model model) {
+		                                    BindingResult bindingResult, Model model,
+		                                   @RequestParam(value="passangerId", required=false)  Long passangeId 
+		                                    ) {
 	
 	if(bindingResult.hasErrors()) {
 		model.addAttribute("errorFields", bindingResult.getAllErrors());

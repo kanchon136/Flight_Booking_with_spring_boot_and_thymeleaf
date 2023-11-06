@@ -25,6 +25,7 @@ public interface PassangerService {
 	void deletePassangerById(Long passangerId);
 	
 	Passanger updatePassanger(Long passangerId, Passanger passanger);
+	List<Passanger> findAllPassangers();
 	
 
 	

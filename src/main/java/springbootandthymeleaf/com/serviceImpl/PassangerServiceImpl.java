@@ -68,7 +68,7 @@ public class PassangerServiceImpl implements PassangerService {
 
 	@Override
 	public Passanger saveOrUpdatePassanger(Long passangerId, Passanger passanger) {
-		if(StringUtils.isNotBlank(passangerId.toString())) {
+		if(passangerId != null){
 			Optional<Passanger> pas = passangerRepo.findAll().parallelStream()
 					.filter(p-> p.getPassangerId()==passangerId).findFirst();
 			
@@ -127,6 +127,14 @@ public class PassangerServiceImpl implements PassangerService {
 	public Passanger updatePassanger(Long passangerId, Passanger passanger) {
 		 //saveAndUpdate ek sathe kora hoiche
 		return null;
+	}
+
+	@Override
+	public List<Passanger> findAllPassangers() {
+		 
+		return passangerRepo.findAll().stream()
+				.sorted(Comparator.comparing(Passanger::getPassangerId,Comparator.nullsLast(Long::compareTo)))
+				.collect(Collectors.toList());
 	}
 
 }
