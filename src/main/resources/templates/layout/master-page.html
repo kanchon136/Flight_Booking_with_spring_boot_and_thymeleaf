@@ -19,7 +19,12 @@
     <!--bellow the jquery link-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    
+    <style>
+        /* Custom CSS to make the menu bar full height with a background color */
+        .full-height-menu {
+            height: 100vh;
+        }
+    </style>
     
 </head>
   
@@ -54,30 +59,53 @@
     </nav>
 
   <div class="row">
-    <div class="col-md-3">
-       <div class="list-group">
-         <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-         
-         
-  <a href="/airports" class="list-group-item list-group-item-action">Aiport Operation Menu</a>
-  <a href="/aircrafts" class="list-group-item list-group-item-action list-group-item-primary">Aircraft operation menu</a>
-  <a href="/flights" class="list-group-item list-group-item-action list-group-item-secondary">Flight Operation Menu</a>
-  <a href="/flight/book" class="list-group-item list-group-item-action list-group-item-success">Flight Booking Operation</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Flight Search Operation</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-warning">Flight Veryfing Operation</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-info">This is the exra menu1</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-light">This is a Extra menu2</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-dark">This is a the Extra menu3</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-dark">This is a the Extra menu3</a>
-  <a href="/departments"   class="list-group-item list-group-item-action list-group-item-dark">Department Webflux</a>
-  <a href="/fileUpload" class="list-group-item list-group-item-action list-group-item-dark">File Uploads</a>
-  
-     </th:block>
-    </div>
     
- </div>
-
-  <div class="col-md-9">
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+      
+   <div class="col-md-2 bg-secondary full-height-menu">
+    <div class="list-group">
+        <a href="#Airport" data-bs-toggle="collapse" data-bs-target="#AirportCollapse" class="list-group-item list-group-item-action">Airport</a>
+        <div id="AirportCollapse" class="collapse">
+            <a href="/airports" class="list-group-item list-group-item-action">Airport Menu</a>
+            <a href="/aircrafts" class="list-group-item list-group-item-action">Aircraft Menu</a>
+            <a href="/flights" class="list-group-item list-group-item-action">Flight Operation Menu</a>
+            <a href="/flight/book" class="list-group-item list-group-item-action">Flight Booking</a>
+            <a href="#" class="list-group-item list-group-item-action">Flight Search</a>
+        </div>
+        
+        <a href="#AirCraft" data-bs-toggle="collapse" data-bs-target="#AirCraftCollapse" class="list-group-item list-group-item-action">Aircraft</a>
+        <div id="AirCraftCollapse" class="collapse">
+            <a href="#" class="list-group-item list-group-item-action">Menu 1</a>
+            <a href="#" class="list-group-item list-group-item-action">Extra Menu 2</a>
+            <a href="#" class="list-group-item list-group-item-action">Extra Menu 3</a>
+        </div>
+        
+        <a href="#Flight" data-bs-toggle="collapse" data-bs-target="#FlightCollapse" class="list-group-item list-group-item-action">Flight</a>
+        <div id="FlightCollapse" class="collapse">
+            <a href="#" class="list-group-item list-group-item-action">Flight Add</a>
+            <a href="#" class="list-group-item list-group-item-action">Flights</a>
+            <a href="#" class="list-group-item list-group-item-action">Book Flight</a>
+            <a href="#" class="list-group-item list-group-item-action">Search Flight</a>
+        </div>
+        
+        <a href="#fileupload" data-bs-toggle="collapse" data-bs-target="#FileUploadCollapse" class="list-group-item list-group-item-action">File Upload</a>
+        <div id="FileUploadCollapse" class="collapse">
+            <a href="/#" class="list-group-item list-group-item-action">Extra</a>
+            <a href="/fileUpload" class="list-group-item list-group-item-action">File Uploads</a>
+        </div>
+        
+        <a href="#department" data-bs-toggle="collapse" data-bs-target="#DepartmentCollapse" class="list-group-item list-group-item-action">Department</a>
+        <div id="DepartmentCollapse" class="collapse">
+            <a href="/departments" class="list-group-item list-group-item-action">Department Webflux</a>
+            <a href="/#" class="list-group-item list-group-item-action">Testing</a>
+        </div>
+    </div>
+</div>
+     
+     
+     </th:block>
+  
+  <div class="col-md-10">
         <div class="container">
             <div layout:fragment="content">
                     
