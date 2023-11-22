@@ -28,7 +28,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"aircraft","departureAirport","destinationAirport","passangers"})
 public class Flight {
 	
 	@Id
